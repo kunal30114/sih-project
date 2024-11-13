@@ -48,7 +48,20 @@ const Dashboard: React.FC = () => {
   const [data, setData] = useState<DashboardData | null>(null);
 
   useEffect(() => {
+<<<<<<< Updated upstream
     fetch('http://127.0.0.1:5500/end_interview')
+=======
+    fetch('http://localhost:3000/api/v1/user/callModel',{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json', // Adjust based on content type
+      },
+      body: JSON.stringify({
+        query: "exit"
+        // add other key-value pairs as needed
+      }),
+    })
+>>>>>>> Stashed changes
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

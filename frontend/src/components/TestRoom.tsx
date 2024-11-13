@@ -4,6 +4,12 @@ import { IconRiCameraLine } from './IconRiCameraLine.tsx';
 import { IconRiCameraOffLine } from './IconRiCameraOffline.tsx';
 import { IconRiMicLine } from './IconRiMicLine.tsx';
 import { IconRiMicOffLine } from './IconRiMicOffline.tsx';
+<<<<<<< Updated upstream
+=======
+// import { TextToSpeech } from 'elevenlabs-node';
+import { useNavigate } from 'react-router-dom';
+// import logo from '/finalLogo.jpg'
+>>>>>>> Stashed changes
 
 declare global {
   interface Window {
@@ -77,11 +83,77 @@ function TestRoom() {
     }
   };
 
+<<<<<<< Updated upstream
+=======
+  let currentAudio: HTMLAudioElement | null = null;
+
+  const speakText = async (newResponse: string) => {
+    if (newResponse) {
+      try {
+        const apiKey = '6gyVcaRy6r2AsTaq1lLFVQTZj4i7pNIM'; // Replace with actual API key
+        const url = 'https://api.on-demand.io/services/v1/public/service/execute/text_to_speech';
+  
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': apiKey,
+          },
+          body: JSON.stringify({
+            model: 'tts-1', // default model from API docs
+            input: newResponse,
+            voice: 'alloy', // default voice or any preferred voice
+          }),
+        };
+  
+        const res = await fetch(url, options);
+  
+        if (!res.ok) {
+          throw new Error('Failed to fetch the audio');
+        }
+  
+        const data = await res.json();
+        const audioUrl = data?.data?.audioUrl;
+  
+        if (audioUrl) {
+          // Stop the previous audio if it is still playing
+          if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+          }
+  
+          currentAudio = new Audio(audioUrl);
+          currentAudio.play();
+  
+          setIsGifVisible(true);
+          currentAudio.onended = () => {
+            setIsGifVisible(false);
+            currentAudio = null;
+          };
+        } else {
+          console.error('Audio URL is missing in the response');
+        }
+  
+      } catch (error) {
+        console.error('Error speaking text:', error);
+      }
+    }
+  };
+  
+
+
+  useEffect(() => {
+    speakText(response);
+  }, [response]);
+  
+ 
+>>>>>>> Stashed changes
   const getResponse = async () => {
     try {
       const res = await axios.post('http://localhost:3000/api/v1/user/callModel', { query: transcript });
       const newResponse = res.data.message;
       setResponse(newResponse);
+      console.log(newResponse)
       setConversationHistory([...conversationHistory, { user: transcript, ai: newResponse }]);
       speakText();
     } catch (error) {

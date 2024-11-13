@@ -5,7 +5,13 @@ from groq import Groq
 
 app = Flask(__name__)
 
+<<<<<<< Updated upstream
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+=======
+# app.use(cors())
+
+CORS(app)
+>>>>>>> Stashed changes
 
 client = Groq(api_key='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')
 
